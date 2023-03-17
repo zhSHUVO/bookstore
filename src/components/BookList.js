@@ -13,11 +13,24 @@ function BookList(props) {
         content = <div>No Books Found!</div>;
 
     if (!isLoading && !isError && books?.length > 0) {
-        if (filter === "featured")
+        if (filter === "featured" && !search)
             content = books
                 .filter((book) => book.featured)
                 .map((book) => <BookItem key={book.id} book={book} />);
-        if (filter === "all")
+        if (filter === "featured" && search)
+            content = books
+                .filter((book) => book.featured)
+                .filter((book) =>
+                    book.name.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((book) => <BookItem key={book.id} book={book} />);
+        if (filter === "all" && search)
+            content = books
+                .filter((book) =>
+                    book.name.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((book) => <BookItem key={book.id} book={book} />);
+        if (filter === "all" && !search)
             content = books.map((book) => (
                 <BookItem key={book.id} book={book} />
             ));

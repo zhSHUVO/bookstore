@@ -1,8 +1,11 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { searchQuery } from "../features/filter/filterSlice";
 import logo from "../images/logo.svg";
 
 function Nav(props) {
+    const dispatch = useDispatch();
     return (
         <div>
             <nav className="py-4 2xl:px-6">
@@ -50,6 +53,9 @@ function Nav(props) {
                                 placeholder="Filter books..."
                                 className="search"
                                 id="lws-search"
+                                onChange={(e) =>
+                                    dispatch(searchQuery(e.target.value))
+                                }
                             />
                         </div>
                     </form>
