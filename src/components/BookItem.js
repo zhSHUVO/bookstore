@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDeleteBookMutation } from "../features/api/apiSlice";
 
 function BookItem({ book }) {
     const navigate = useNavigate();
+    const [deleteBook] = useDeleteBookMutation();
     const { name, author, thumbnail, price, rating, featured, id } = book;
 
     return (
@@ -34,7 +36,10 @@ function BookItem({ book }) {
                                 />
                             </svg>
                         </button>
-                        <button className="lws-deleteBook">
+                        <button
+                            onClick={() => deleteBook(id)}
+                            className="lws-deleteBook"
+                        >
                             <svg
                                 fill="none"
                                 viewBox="0 0 24 24"
