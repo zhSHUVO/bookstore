@@ -1,6 +1,19 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import EditBookCard from "../components/EditBookCard";
+import { useGetBookQuery } from "../features/api/apiSlice";
 
-function Edit(props) {
+function Edit() {
+    const { bookId } = useParams();
+    const { data: book, isLoading, isError, error } = useGetBookQuery(bookId);
+
+    let content = null;
+    if (isLoading) content = <div>Loading...</div>;
+    if (!isLoading && isError) content = <div>{error}</div>;
+    if (!isLoading && !isError && book?.id) {
+        content = <EditBookCard book={book} />;
+    }
+
     return (
         <div>
             <main className="py-6 2xl:px-6">
@@ -9,90 +22,7 @@ function Edit(props) {
                         <h4 className="mb-8 text-xl font-bold text-center">
                             Edit Book
                         </h4>
-                        <form className="book-form">
-                            <div className="space-y-2">
-                                <label htmlFor="lws-bookName">Book Name</label>
-                                <input
-                                    required
-                                    className="text-input"
-                                    type="text"
-                                    id="lws-bookName"
-                                    name="name"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label htmlFor="lws-author">Author</label>
-                                <input
-                                    required
-                                    className="text-input"
-                                    type="text"
-                                    id="lws-author"
-                                    name="author"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label htmlFor="lws-thumbnail">Image Url</label>
-                                <input
-                                    required
-                                    className="text-input"
-                                    type="text"
-                                    id="lws-thumbnail"
-                                    name="thumbnail"
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-8 pb-4">
-                                <div className="space-y-2">
-                                    <label htmlFor="lws-price">Price</label>
-                                    <input
-                                        required
-                                        className="text-input"
-                                        type="number"
-                                        id="lws-price"
-                                        name="price"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label htmlFor="lws-rating">Rating</label>
-                                    <input
-                                        required
-                                        className="text-input"
-                                        type="number"
-                                        id="lws-rating"
-                                        name="rating"
-                                        min="1"
-                                        max="5"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex items-center">
-                                <input
-                                    id="lws-featured"
-                                    type="checkbox"
-                                    name="featured"
-                                    className="w-4 h-4"
-                                />
-                                <label
-                                    htmlFor="lws-featured"
-                                    className="ml-2 text-sm"
-                                >
-                                    {" "}
-                                    This is a featured book{" "}
-                                </label>
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="submit"
-                                id="lws-submit"
-                            >
-                                Edit Book
-                            </button>
-                        </form>
+                        {content}
                     </div>
                 </div>
             </main>
